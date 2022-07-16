@@ -1,24 +1,43 @@
 #include<iostream>
 
-int main(int argc, char ** args)
+#define TERMINAL_VALUE -1
+struct RaggedArray
 {
-	for (int i = 0; i < argc; i++)
+	int** data = NULL;
+	int rows = 0;
+};
+
+int main()
+{
+	RaggedArray mas;
+
+	scanf_s("%i", &mas.rows);
+	mas.data = (int**)malloc(sizeof(int*) * mas.rows);
+	
+	for (int i = 0; i < mas.rows; i++)
 	{
-		if (strcmp(args[i], "start") == 0)
-		{
-			printf("Lets start!!!\n");
-			system("pause");
-			printf("Start!");
-		}
-		if (strcmp(args[i], "whereami") == 0)
-		{
-			printf("You are here: %s", args[0]);
-			system("pause");
-			exit(0);
-		}
+		int cols;
+		scanf_s("%i", &cols);
+		mas.data[i] = (int*)malloc(sizeof(int) * (cols+1));
+		for (int j = 0; j < cols; j++)
+			mas.data[i][j] = 0;
+		mas.data[i][cols] = TERMINAL_VALUE;
 	}
 
-	printf("Wrong command.\n");
+	for (int i = 0; i < mas.rows; i++)
+		for (int j = 0; mas.data[i][j] != TERMINAL_VALUE; j++)
+			mas.data[i][j] = rand() % 100;
+
+	for (int i = 0; i < mas.rows; i++)
+	{
+		for (int j = 0; mas.data[i][j] != TERMINAL_VALUE; j++)
+			printf("%3i ", mas.data[i][j]);
+		printf("\n");
+	}
+
+	for (int i = 0; i < mas.rows; i++)
+		free(mas.data[i]);
+	free(mas.data);
 
 	system("pause");
 	return 0;
